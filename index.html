@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trainingsschema 70.3 - 15 mei 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  .countdown {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f97316;
+    margin-bottom: 20px;
+  }
+
+  /* ── STATS DASHBOARD ── */
+  .stats-dashboard {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .stats-title {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    border: 1px solid #1e293b;
+  }
+
+  .stat-icon { font-size: 1.6rem; margin-bottom: 4px; }
+
+  .stat-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .stat-swim .stat-value { color: #a5b4fc; }
+  .stat-bike .stat-value { color: #6ee7b7; }
+  .stat-run  .stat-value { color: #93c5fd; }
+
+  .stat-progress {
+    height: 3px;
+    background: #1e293b;
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .stat-progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .stat-swim .stat-progress-fill { background: #a5b4fc; }
+  .stat-bike .stat-progress-fill { background: #6ee7b7; }
+  .stat-run  .stat-progress-fill { background: #93c5fd; }
+
+  .stat-target {
+    font-size: 0.68rem;
+    color: #475569;
+    margin-top: 4px;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── PHASE LABEL ── */
+  .phase-label {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 20px 0 10px;
+  }
+
+  .phase-label span {
+    background: #1e293b;
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid #334155;
+  }
+
+  /* ── WEEK ── */
+  .week {
+    background: #1e293b;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid #334155;
+    transition: border-color 0.2s;
+  }
+
+  .week:hover { border-color: #475569; }
+  .week.recovery { border-color: #1d4ed8; }
+  .week.race-week { border-color: #f97316; box-shadow: 0 0 20px rgba(249,115,22,0.15); }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #263348;
+  }
+
+  .week-title { font-weight: 700; font-size: 0.95rem; color: #f1f5f9; }
+  .week-dates { font-size: 0.8rem; color: #94a3b8; margin-left: 10px; }
+
+  .week-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-recovery { background: #1d4ed8; color: #bfdbfe; }
+  .badge-race     { background: #f97316; color: #fff; }
+  .badge-build    { background: #059669; color: #d1fae5; }
+  .badge-normal   { background: #334155; color: #94a3b8; }
+  .badge-special  { background: #7e22ce; color: #e9d5ff; }
+
+  .week-content {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+
+  /* ── DAY ── */
+  .day {
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    transition: opacity 0.2s, border-color 0.2s;
+    position: relative;
+  }
+
+  .day.completed {
+    opacity: 0.55;
+    border-color: #14532d;
+    background: #0a1a10;
+  }
+
+  .day.birthday {
+    border-color: #f59e0b;
+    background: #1c1505;
+  }
+
+  .day.special-event {
+    border-color: #7e22ce;
+    background: #120a1e;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .day-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+  }
+
+  .day.completed .day-name { color: #14532d; }
+
+  /* Checkbox */
+  .day-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 2px solid #334155;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-size: 0.75rem;
+  }
+
+  .day-check:hover { border-color: #22c55e; }
+  .day.completed .day-check { background: #22c55e; border-color: #22c55e; }
+
+  .day-activity { font-size: 0.88rem; color: #e2e8f0; line-height: 1.4; }
+  .day.completed .day-activity { text-decoration: line-through; color: #475569; }
+
+  .day-detail { font-size: 0.78rem; color: #64748b; margin-top: 4px; line-height: 1.4; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-top: 5px;
+  }
+
+  .tag-run     { background: #1e3a5f; color: #93c5fd; }
+  .tag-bike    { background: #1a3a2a; color: #6ee7b7; }
+  .tag-swim    { background: #1e2d5f; color: #a5b4fc; }
+  .tag-gym     { background: #3b1e5f; color: #d8b4fe; }
+  .tag-hockey  { background: #5f3a1e; color: #fdba74; }
+  .tag-rest    { background: #1e293b; color: #64748b; }
+  .tag-zone2   { background: #14532d; color: #86efac; }
+  .tag-tempo   { background: #7f1d1d; color: #fca5a5; }
+  .tag-race    { background: #7c2d12; color: #fed7aa; }
+  .tag-brick   { background: #3b2e1e; color: #fbbf24; }
+  .tag-bday    { background: #78350f; color: #fde68a; }
+  .tag-special { background: #4c1d95; color: #ddd6fe; }
+
+  .tip-box {
+    background: #1e293b;
+    border-left: 3px solid #3b82f6;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-top: 4px;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    grid-column: 1 / -1;
+  }
+
+  .tip-box strong { color: #60a5fa; }
+
+  .progress-bar { height: 4px; background: #0f172a; border-radius: 0 0 14px 14px; }
+  .progress-fill { height: 100%; border-radius: 0 0 14px 14px; }
+
+  /* ── EDIT BUTTON ── */
+  .day-edit {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 2px solid #334155;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: #64748b;
+    transition: all 0.15s;
+    margin-left: 4px;
+  }
+
+  .day-edit:hover { border-color: #f97316; color: #f97316; }
+  .day.completed .day-edit { opacity: 0.4; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .modal-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+  }
+
+  .modal-date {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+
+  .modal-field { margin-bottom: 14px; }
+
+  .modal-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+
+  .modal-input {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .modal-input:focus { border-color: #3b82f6; }
+
+  .modal-km-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .modal-km-field label {
+    display: block;
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .modal-km-field input {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.15s;
+  }
+
+  .modal-km-field input:focus { border-color: #3b82f6; }
+
+  .modal-km-field .km-label-swim { color: #a5b4fc; }
+  .modal-km-field .km-label-bike { color: #6ee7b7; }
+  .modal-km-field .km-label-run  { color: #93c5fd; }
+
+  .modal-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .btn-cancel {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-cancel:hover { background: #0f172a; }
+
+  .btn-save {
+    flex: 2;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #3b82f6;
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-save:hover { background: #2563eb; }
+
+  .btn-reset {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: transparent;
+    color: #ef4444;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-reset:hover { background: #1c0a0a; border-color: #ef4444; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .week-content { grid-template-columns: 1fr; }
+    h1 { font-size: 1.3rem; }
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🏊‍♂️🚴‍♂️🏃‍♂️ Trainingsschema 70.3</h1>
+<p class="subtitle">16 februari → 15 mei 2026</p>
+<p class="countdown">⏱️ 13 weken tot race day — vrijdag 15 mei</p>
+
+<!-- STATS DASHBOARD -->
+<div class="stats-dashboard">
+  <div class="stats-title">📊 Afgevinkde kilometers</div>
+  <div class="stats-grid">
+    <div class="stat-card stat-swim">
+      <div class="stat-icon">🏊</div>
+      <div class="stat-value" id="swim-total">0</div>
+      <div class="stat-label">meter zwemmen</div>
+      <div class="stat-progress"><div class="stat-progress-fill" id="swim-bar" style="width:0%"></div></div>
+      <div class="stat-target" id="swim-target">doel: 0m</div>
+    </div>
+    <div class="stat-card stat-bike">
+      <div class="stat-icon">🚴</div>
+      <div class="stat-value" id="bike-total">0</div>
+      <div class="stat-label">km fietsen</div>
+      <div class="stat-progress"><div class="stat-progress-fill" id="bike-bar" style="width:0%"></div></div>
+      <div class="stat-target" id="bike-target">doel: 0km</div>
+    </div>
+    <div class="stat-card stat-run">
+      <div class="stat-icon">🏃</div>
+      <div class="stat-value" id="run-total">0</div>
+      <div class="stat-label">km hardlopen</div>
+      <div class="stat-progress"><div class="stat-progress-fill" id="run-bar" style="width:0%"></div></div>
+      <div class="stat-target" id="run-target">doel: 0km</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#93c5fd"></div> Hardlopen</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6ee7b7"></div> Fietsen</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a5b4fc"></div> Zwemmen</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d8b4fe"></div> Kracht</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fdba74"></div> Hockey</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#86efac"></div> Zone 2</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fca5a5"></div> Tempo</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div> Brick</div>
+</div>
+
+<!-- ── EDIT MODAL ── -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Training bewerken</div>
+    <div class="modal-date" id="modal-date"></div>
+    <div class="modal-field">
+      <label class="modal-label">Activiteit</label>
+      <input class="modal-input" type="text" id="modal-activity" placeholder="bijv. 🚴 Fietsen zone 2">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Notitie / detail</label>
+      <input class="modal-input" type="text" id="modal-detail" placeholder="bijv. 45km · zone 2 · hartslag &lt;160">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Kilometers</label>
+      <div class="modal-km-row">
+        <div class="modal-km-field">
+          <label class="km-label-swim">🏊 Zwem (m)</label>
+          <input type="number" id="modal-swim" min="0" placeholder="0">
+        </div>
+        <div class="modal-km-field">
+          <label class="km-label-bike">🚴 Fiets (km)</label>
+          <input type="number" id="modal-bike" min="0" placeholder="0">
+        </div>
+        <div class="modal-km-field">
+          <label class="km-label-run">🏃 Loop (km)</label>
+          <input type="number" id="modal-run" min="0" placeholder="0">
+        </div>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button class="btn-reset" onclick="resetDay()">↩ Reset</button>
+      <button class="btn-cancel" onclick="closeModal()">Annuleer</button>
+      <button class="btn-save" onclick="saveEdit()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FASE 1 ═══ -->
+<div class="phase-label"><span>📦 Fase 1 — Basis opbouw (week 1–4)</span></div>
+
+<!-- WEEK 1 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 1</span>
+      <span class="week-dates">ma 16 – zo 22 feb</span>
+    </div>
+    <span class="week-badge badge-normal">Start</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w1-ma"><div class="day-header"><div class="day-name">Maandag 16 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><div class="day-detail">Vaste rustdag</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w1-di"><div class="day-header"><div class="day-name">Dinsdag 17 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — benen</div><div class="day-detail">Focus op squat, deadlift, lunges</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-swim="0" data-run="8" data-id="w1-wo"><div class="day-header"><div class="day-name">Woensdag 18 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">8km · 4:45–5:10/km · op vermoeide benen</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w1-do"><div class="day-header"><div class="day-name">Donderdag 19 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht</div><div class="day-detail">Upper body / core focus</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-bike="40" data-id="w1-vr"><div class="day-header"><div class="day-name">Vrijdag 20 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Fietsen</div><div class="day-detail">1,5u · zone 2 · hartslag &lt;160 · ~40km</div><span class="tag tag-bike">Fiets</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-run="10" data-id="w1-za"><div class="day-header"><div class="day-name">Zaterdag 21 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">10km · hartslag max 160 · nieuwe schoenen inlopen</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1200" data-id="w1-zo"><div class="day-header"><div class="day-name">Zondag 22 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen</div><div class="day-detail">Zwembad · 1000–1200m · techniek focus</div><span class="tag tag-swim">Zwem</span></div>
+    <div class="tip-box"><strong>💡 Tip week 1:</strong> Nieuwe schoenen — houd het rustig op zaterdag. Focus op het gevoel van zone 2 (hartslag max 160). Het tempo doet er niet toe, de hartslag wel.</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:8%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>
+</div>
+
+<!-- WEEK 2 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 2</span>
+      <span class="week-dates">ma 23 feb – zo 1 mrt</span>
+    </div>
+    <span class="week-badge badge-normal">Opbouw</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w2-ma"><div class="day-header"><div class="day-name">Maandag 23 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w2-di"><div class="day-header"><div class="day-name">Dinsdag 24 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — benen</div><div class="day-detail">Iets zwaarder dan week 1</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="9" data-id="w2-wo"><div class="day-header"><div class="day-name">Woensdag 25 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">8–9km · 4:45–5:10/km</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w2-do"><div class="day-header"><div class="day-name">Donderdag 26 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-bike="45" data-id="w2-vr"><div class="day-header"><div class="day-name">Vrijdag 27 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Fietsen</div><div class="day-detail">1,5–2u · zone 2 · ~45km</div><span class="tag tag-bike">Fiets</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-run="12" data-id="w2-za"><div class="day-header"><div class="day-name">Zaterdag 28 feb</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">11–12km · hartslag max 160</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1500" data-id="w2-zo"><div class="day-header"><div class="day-name">Zondag 1 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen</div><div class="day-detail">Zwembad · 1200–1500m · crawl techniek</div><span class="tag tag-swim">Zwem</span></div>
+    <div class="tip-box"><strong>💡 Tip week 2:</strong> Vergelijk je zone 2 tempo met week 1 — merk je al dat het iets sneller gaat bij dezelfde hartslag? Dat is progressie!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:15%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>
+</div>
+
+<!-- WEEK 3 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 3</span>
+      <span class="week-dates">ma 2 – zo 8 mrt</span>
+    </div>
+    <span class="week-badge badge-build">Opbouw</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w3-ma"><div class="day-header"><div class="day-name">Maandag 2 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w3-di"><div class="day-header"><div class="day-name">Dinsdag 3 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — benen</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="10" data-id="w3-wo"><div class="day-header"><div class="day-name">Woensdag 4 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">9–10km · 4:45–5:00/km</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w3-do"><div class="day-header"><div class="day-name">Donderdag 5 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-bike="50" data-id="w3-vr"><div class="day-header"><div class="day-name">Vrijdag 6 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Fietsen</div><div class="day-detail">2u · zone 2 · eventueel 2x10min tempo blok · ~50km</div><span class="tag tag-bike">Fiets</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-run="14" data-id="w3-za"><div class="day-header"><div class="day-name">Zaterdag 7 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">13–14km · hartslag max 160</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1500" data-id="w3-zo"><div class="day-header"><div class="day-name">Zondag 8 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen</div><div class="day-detail">Zwembad · 1500m · focus op ademhaling</div><span class="tag tag-swim">Zwem</span></div>
+    <div class="tip-box"><strong>💡 Tip week 3:</strong> Begin elke zwemtraining met 200m rustige warming-up en eindig met 200m cooldown.</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:23%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>
+</div>
+
+<!-- WEEK 4 — Recovery -->
+<div class="week recovery">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 4</span>
+      <span class="week-dates">ma 9 – zo 15 mrt</span>
+    </div>
+    <span class="week-badge badge-recovery">Recovery</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w4-ma"><div class="day-header"><div class="day-name">Maandag 9 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w4-di"><div class="day-header"><div class="day-name">Dinsdag 10 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="7" data-id="w4-wo"><div class="day-header"><div class="day-name">Woensdag 11 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Rustige run</div><div class="day-detail">7km · zone 2</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-id="w4-do"><div class="day-header"><div class="day-name">Donderdag 12 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-bike="30" data-id="w4-vr"><div class="day-header"><div class="day-name">Vrijdag 13 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Herstelrit</div><div class="day-detail">1u · zone 1–2 · rustig · ~30km</div><span class="tag tag-bike">Fiets</span></div>
+    <div class="day" data-run="10" data-id="w4-za"><div class="day-header"><div class="day-name">Zaterdag 14 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">10km · lekker relaxed</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1000" data-id="w4-zo"><div class="day-header"><div class="day-name">Zondag 15 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen + 🏑 Hockey</div><div class="day-detail">Zwem: 1000m rustig · Hockeywedstrijd 🏑</div><span class="tag tag-swim">Zwem</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Recovery week:</strong> Minder is meer. Je lichaam groeit in rustperiodes, niet tijdens de training zelf!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:31%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FASE 2 ═══ -->
+<div class="phase-label"><span>🔥 Fase 2 — Race-specifiek (week 5–9)</span></div>
+
+<!-- WEEK 5 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 5</span>
+      <span class="week-dates">ma 16 – zo 22 mrt</span>
+    </div>
+    <span class="week-badge badge-build">Intensief</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w5-ma"><div class="day-header"><div class="day-name">Maandag 16 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w5-di"><div class="day-header"><div class="day-name">Dinsdag 17 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — benen</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="10" data-id="w5-wo"><div class="day-header"><div class="day-name">Woensdag 18 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">10km · 4:45–5:00/km · brick-stijl</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w5-do"><div class="day-header"><div class="day-name">Donderdag 19 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht + 🏑 Hockey training</div><span class="tag tag-gym">Gym</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="day" data-bike="55" data-id="w5-vr"><div class="day-header"><div class="day-name">Vrijdag 20 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Fietsen</div><div class="day-detail">2u · mix zone 2 + 2x15min 70.3 tempo · ~55km</div><span class="tag tag-bike">Fiets</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-run="15" data-id="w5-za"><div class="day-header"><div class="day-name">Zaterdag 21 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">14–15km · hartslag max 160</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1700" data-id="w5-zo"><div class="day-header"><div class="day-name">Zondag 22 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen + 🏑 Hockey</div><div class="day-detail">Zwem: 1500–1700m · Hockeywedstrijd 🏑</div><span class="tag tag-swim">Zwem</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Tip week 5:</strong> Voeg op de fiets je eerste 70.3-tempo blokken toe. Hartslag rond 155–165.</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:38%;background:linear-gradient(90deg,#f97316,#eab308)"></div></div>
+</div>
+
+<!-- WEEK 6 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 6</span>
+      <span class="week-dates">ma 23 – zo 29 mrt</span>
+    </div>
+    <span class="week-badge badge-build">Brick focus</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w6-ma"><div class="day-header"><div class="day-name">Maandag 23 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w6-di"><div class="day-header"><div class="day-name">Dinsdag 24 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — benen</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="10" data-id="w6-wo"><div class="day-header"><div class="day-name">Woensdag 25 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">10km · race-specifiek tempo</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w6-do"><div class="day-header"><div class="day-name">Donderdag 26 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht + 🏑 Hockey training</div><span class="tag tag-gym">Gym</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="day" data-bike="40" data-run="4" data-id="w6-vr"><div class="day-header"><div class="day-name">Vrijdag 27 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴🏃 Brick training!</div><div class="day-detail">60–75min fietsen (~40km) direct gevolgd door 20–25min lopen (4km)</div><span class="tag tag-bike">Fiets</span><span class="tag tag-brick">Brick</span></div>
+    <div class="day" data-run="15" data-id="w6-za"><div class="day-header"><div class="day-name">Zaterdag 28 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">15km · hartslag max 160</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1700" data-id="w6-zo"><div class="day-header"><div class="day-name">Zondag 29 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen + 🏑 Hockey</div><div class="day-detail">Zwem: 1700m · Hockeywedstrijd 🏑</div><span class="tag tag-swim">Zwem</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Brick tip:</strong> Die eerste meters na het fietsen voelen vreemd — "dead legs". Gewoon doorlopen, na 5 min went het!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:46%;background:linear-gradient(90deg,#f97316,#eab308)"></div></div>
+</div>
+
+<!-- WEEK 7 — Recovery Pasen -->
+<div class="week recovery">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 7</span>
+      <span class="week-dates">ma 30 mrt – zo 5 apr</span>
+    </div>
+    <span class="week-badge badge-recovery">Recovery 🐣</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w7-ma"><div class="day-header"><div class="day-name">Maandag 30 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w7-di"><div class="day-header"><div class="day-name">Dinsdag 31 mrt</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="8" data-id="w7-wo"><div class="day-header"><div class="day-name">Woensdag 1 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Rustige run</div><div class="day-detail">7–8km · zone 2</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-id="w7-do"><div class="day-header"><div class="day-name">Donderdag 2 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-bike="30" data-id="w7-vr"><div class="day-header"><div class="day-name">Vrijdag 3 apr — Goede Vrijdag</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Herstelrit</div><div class="day-detail">1u · rustig · ~30km · of extra rust</div><span class="tag tag-bike">Fiets</span></div>
+    <div class="day" data-run="12" data-id="w7-za"><div class="day-header"><div class="day-name">Zaterdag 4 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">10–12km · relaxed</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1200" data-id="w7-zo"><div class="day-header"><div class="day-name">Zondag 5 apr — Pasen</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen</div><div class="day-detail">1200m rustig · geen hockey dit weekend</div><span class="tag tag-swim">Zwem</span></div>
+    <div class="tip-box"><strong>💡 Pasen:</strong> Geniet van het weekend. Je lichaam heeft na 3 intensieve weken echt rust nodig!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:54%;background:linear-gradient(90deg,#f97316,#eab308)"></div></div>
+</div>
+
+<!-- WEEK 8 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 8</span>
+      <span class="week-dates">ma 6 – zo 12 apr</span>
+    </div>
+    <span class="week-badge badge-build">Piek opbouw</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w8-ma"><div class="day-header"><div class="day-name">Maandag 6 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w8-di"><div class="day-header"><div class="day-name">Dinsdag 7 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — benen</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="10" data-id="w8-wo"><div class="day-header"><div class="day-name">Woensdag 8 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">10–12km · race-pace simulatie</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w8-do"><div class="day-header"><div class="day-name">Donderdag 9 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht + 🏑 Hockey training</div><span class="tag tag-gym">Gym</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="day" data-bike="55" data-run="8" data-id="w8-vr"><div class="day-header"><div class="day-name">Vrijdag 10 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴🏃 Brick training</div><div class="day-detail">90min fietsen (~55km) direct gevolgd door 30min lopen (8km) · 70.3 tempo</div><span class="tag tag-bike">Fiets</span><span class="tag tag-brick">Brick</span></div>
+    <div class="day" data-run="16" data-id="w8-za"><div class="day-header"><div class="day-name">Zaterdag 11 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Lange zone 2 run</div><div class="day-detail">16–18km · hartslag max 160</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1500" data-id="w8-zo"><div class="day-header"><div class="day-name">Zondag 12 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Open water + 🏑 Hockey</div><div class="day-detail">Eerste open water sessie bij surfclub! (met boei) · Hockeywedstrijd 🏑</div><span class="tag tag-swim">Zwem</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Open water tip:</strong> Ga met bekenden van de surfclub. Doel is alleen wennen aan het gevoel, geen afstand. Boei altijd bij je!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:62%;background:linear-gradient(90deg,#f97316,#eab308)"></div></div>
+</div>
+
+<!-- WEEK 9 — Piek -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 9</span>
+      <span class="week-dates">ma 13 – zo 19 apr</span>
+    </div>
+    <span class="week-badge badge-build">Piek week</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w9-ma"><div class="day-header"><div class="day-name">Maandag 13 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w9-di"><div class="day-header"><div class="day-name">Dinsdag 14 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — laatste zware week</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="10" data-id="w9-wo"><div class="day-header"><div class="day-name">Woensdag 15 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">10km · 70.3 race-pace</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day special-event" data-bike="150" data-id="w9-do"><div class="day-header"><div class="day-name">Donderdag 16 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Amstel Gold Race — 150km!</div><div class="day-detail">Gran fondo · genieten maar ook serieus nemen — dit is een enorme training!</div><span class="tag tag-bike">Fiets</span><span class="tag tag-special">Amstel Gold</span></div>
+    <div class="day birthday" data-id="w9-vr"><div class="day-header"><div class="day-name">Vrijdag 17 apr 🎂</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🎉 Verjaardag — Rust!</div><div class="day-detail">Gefeliciteerd! Verdiende rust na 150km gisteren 🥳🎈</div><span class="tag tag-rest">Rust</span><span class="tag tag-bday">Verjaardag</span></div>
+    <div class="day" data-run="15" data-id="w9-za"><div class="day-header"><div class="day-name">Zaterdag 18 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">15km · hartslag max 160 · benen voelen de 150km nog!</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1500" data-id="w9-zo"><div class="day-header"><div class="day-name">Zondag 19 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Open water + 🏑 Hockey</div><div class="day-detail">Open water: 1200–1500m · Hockeywedstrijd 🏑</div><span class="tag tag-swim">Zwem</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Piek week:</strong> De Amstel Gold Race maakt dit je absolute piek qua fietsvolume. Luister naar je lichaam — de taper begint hierna!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:69%;background:linear-gradient(90deg,#f97316,#eab308)"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FASE 3 ═══ -->
+<div class="phase-label"><span>🎯 Fase 3 — Taper & Race (week 10–13)</span></div>
+
+<!-- WEEK 10 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 10</span>
+      <span class="week-dates">ma 20 – zo 26 apr</span>
+    </div>
+    <span class="week-badge badge-recovery">Taper start</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w10-ma"><div class="day-header"><div class="day-name">Maandag 20 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w10-di"><div class="day-header"><div class="day-name">Dinsdag 21 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="8" data-id="w10-wo"><div class="day-header"><div class="day-name">Woensdag 22 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Tempo run</div><div class="day-detail">8km · race-pace · voelt makkelijk</div><span class="tag tag-run">Run</span><span class="tag tag-tempo">Tempo</span></div>
+    <div class="day" data-id="w10-do"><div class="day-header"><div class="day-name">Donderdag 23 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-bike="40" data-id="w10-vr"><div class="day-header"><div class="day-name">Vrijdag 24 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Fietsen</div><div class="day-detail">1,5u · zone 2 · ~40km</div><span class="tag tag-bike">Fiets</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-run="12" data-id="w10-za"><div class="day-header"><div class="day-name">Zaterdag 25 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Zone 2 run</div><div class="day-detail">12km · relaxed</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1500" data-id="w10-zo"><div class="day-header"><div class="day-name">Zondag 26 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Open water zwemmen</div><div class="day-detail">1500m · focus op ontspanning in het water</div><span class="tag tag-swim">Zwem</span></div>
+    <div class="tip-box"><strong>💡 Taper tip:</strong> Je benen voelen misschien "dood" — dat is normaal. Vertrouw het proces en ga niet extra trainen!</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:77%;background:linear-gradient(90deg,#10b981,#059669)"></div></div>
+</div>
+
+<!-- WEEK 11 -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 11</span>
+      <span class="week-dates">ma 27 apr – zo 3 mei</span>
+    </div>
+    <span class="week-badge badge-recovery">Taper</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w11-ma"><div class="day-header"><div class="day-name">Maandag 27 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-id="w11-di"><div class="day-header"><div class="day-name">Dinsdag 28 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">💪 Kracht — heel licht</div><span class="tag tag-gym">Gym</span></div>
+    <div class="day" data-run="7" data-id="w11-wo"><div class="day-header"><div class="day-name">Woensdag 29 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Run</div><div class="day-detail">6–7km · mix zone 2 + wat race-pace stukjes</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-id="w11-do"><div class="day-header"><div class="day-name">Donderdag 30 apr</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🧘 Rust / lichte mobiliteit</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-bike="30" data-id="w11-vr"><div class="day-header"><div class="day-name">Vrijdag 1 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Korte fietsrit</div><div class="day-detail">1u · zone 2 · benen losmaken · ~30km</div><span class="tag tag-bike">Fiets</span></div>
+    <div class="day" data-run="8" data-id="w11-za"><div class="day-header"><div class="day-name">Zaterdag 2 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Korte run</div><div class="day-detail">8km · zone 2 · geen stress</div><span class="tag tag-run">Run</span><span class="tag tag-zone2">Zone 2</span></div>
+    <div class="day" data-swim="1000" data-id="w11-zo"><div class="day-header"><div class="day-name">Zondag 3 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Zwemmen + 🏑 Hockey</div><div class="day-detail">Zwem: 1000m rustig · Hockeywedstrijd 🏑</div><span class="tag tag-swim">Zwem</span><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Kracht tip:</strong> Stop met zware krachtraining deze week. Je hebt je kracht al opgebouwd — nu wil je fris aan de start staan.</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:85%;background:linear-gradient(90deg,#10b981,#059669)"></div></div>
+</div>
+
+<!-- WEEK 12 — Pre-race -->
+<div class="week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 12</span>
+      <span class="week-dates">ma 4 – zo 10 mei</span>
+    </div>
+    <span class="week-badge badge-recovery">Pre-race</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w12-ma"><div class="day-header"><div class="day-name">Maandag 4 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-run="4" data-id="w12-di"><div class="day-header"><div class="day-name">Dinsdag 5 mei — Bevrijdingsdag</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Activeringsrun</div><div class="day-detail">20–25min · paar stukjes race-pace · ~4km</div><span class="tag tag-run">Run</span></div>
+    <div class="day" data-bike="20" data-id="w12-wo"><div class="day-header"><div class="day-name">Woensdag 6 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Kort fietsen</div><div class="day-detail">30–40min · zone 2 · ~20km</div><span class="tag tag-bike">Fiets</span></div>
+    <div class="day" data-id="w12-do"><div class="day-header"><div class="day-name">Donderdag 7 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-swim="500" data-id="w12-vr"><div class="day-header"><div class="day-name">Vrijdag 8 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Kort zwemmen</div><div class="day-detail">500m · losmaken</div><span class="tag tag-swim">Zwem</span></div>
+    <div class="day" data-id="w12-za"><div class="day-header"><div class="day-name">Zaterdag 9 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Rust + voorbereiding</div><div class="day-detail">Fiets checken · race-tas pakken · goed eten · vroeg slapen</div><span class="tag tag-rest">Rust</span></div>
+    <div class="day" data-id="w12-zo"><div class="day-header"><div class="day-name">Zondag 10 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏑 Laatste hockeywedstrijd!</div><div class="day-detail">Geniet ervan — dit is je laatste wedstrijd voor 2 seizoenen! 🏑</div><span class="tag tag-hockey">Hockey</span></div>
+    <div class="tip-box"><strong>💡 Pre-race week:</strong> Maandag 11 mei is volledige rust. 5 dagen tot de race — focus op slaap, voeding en mentale voorbereiding.</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:92%;background:linear-gradient(90deg,#10b981,#059669)"></div></div>
+</div>
+
+<!-- WEEK 13 — Race week -->
+<div class="week race-week">
+  <div class="week-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="week-title">Week 13</span>
+      <span class="week-dates">ma 11 – vr 15 mei</span>
+    </div>
+    <span class="week-badge badge-race">🏁 Race week!</span>
+  </div>
+  <div class="week-content">
+    <div class="day" data-id="w13-ma"><div class="day-header"><div class="day-name">Maandag 11 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🛌 Volledige rust</div><div class="day-detail">Herstel na laatste hockeywedstrijd</div><span class="tag tag-rest">Herstel</span></div>
+    <div class="day" data-run="2" data-id="w13-di"><div class="day-header"><div class="day-name">Dinsdag 12 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏃 Activeringsrun</div><div class="day-detail">15–20min · paar stukjes race-pace · ~2km</div><span class="tag tag-run">Run</span></div>
+    <div class="day" data-bike="10" data-id="w13-wo"><div class="day-header"><div class="day-name">Woensdag 13 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🚴 Kort fietsen</div><div class="day-detail">20–30min · zone 2 · pure activering · ~10km</div><span class="tag tag-bike">Fiets</span></div>
+    <div class="day" data-swim="400" data-id="w13-do"><div class="day-header"><div class="day-name">Donderdag 14 mei</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊 Kort zwemmen + rust</div><div class="day-detail">300–400m · losmaken · vroeg naar bed · fiets checken · race-tas klaar</div><span class="tag tag-swim">Zwem</span><span class="tag tag-rest">Rust</span></div>
+    <div class="day" data-bike="90" data-run="21" data-swim="1900" data-id="w13-vr"><div class="day-header"><div class="day-name">Vrijdag 15 mei 🏆</div><div class="day-check" onclick="toggleDay(this)"></div><div class="day-edit" onclick="openEdit(this)">✏️</div></div><div class="day-activity">🏊🚴🏃 RACE DAY — 70.3!</div><div class="day-detail">Zwem 1,9km · Fiets 90km · Run 21,1km · Start conservatief!</div><span class="tag tag-race">RACE DAY</span></div>
+    <div class="tip-box"><strong>💡 Race day strategie:</strong> Zwem rustig, niet meegesleurd. Fiets hartslag &lt;165. Run eerste 5km op 160, daarna kijken wat er nog in zit. Jij kunt dit! 💪🔱</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,#f97316,#ef4444)"></div></div>
+</div>
+
+<div style="text-align:center;margin-top:30px;color:#475569;font-size:0.8rem;padding-bottom:20px">
+  Gemaakt op 15 februari 2026 · 70.3 Triatlon vrijdag 15 mei 2026 · Veel succes! 🔱
+</div>
+
+<script>
+  // ── EDIT MODAL ────────────────────────────────────────
+  let editingDayEl = null;
+  let originalData = {}; // store originals for reset
+
+  function openEdit(btn) {
+    const day = btn.closest('.day');
+    editingDayEl = day;
+
+    const id       = day.dataset.id;
+    const dayName  = day.querySelector('.day-name').textContent;
+    const activity = day.querySelector('.day-activity').textContent;
+    const detail   = day.querySelector('.day-detail') ? day.querySelector('.day-detail').textContent : '';
+
+    // Save original data for reset (only once)
+    if (!originalData[id]) {
+      originalData[id] = {
+        activity,
+        detail,
+        swim: day.dataset.swim || '',
+        bike: day.dataset.bike || '',
+        run:  day.dataset.run  || ''
+      };
+    }
+
+    // Populate modal
+    document.getElementById('modal-date').textContent     = dayName;
+    document.getElementById('modal-activity').value       = activity;
+    document.getElementById('modal-detail').value         = detail;
+    document.getElementById('modal-swim').value           = day.dataset.swim || '';
+    document.getElementById('modal-bike').value           = day.dataset.bike || '';
+    document.getElementById('modal-run').value            = day.dataset.run  || '';
+
+    document.getElementById('editModal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('editModal').classList.remove('open');
+    editingDayEl = null;
+  }
+
+  function saveEdit() {
+    if (!editingDayEl) return;
+    const id = editingDayEl.dataset.id;
+
+    const newActivity = document.getElementById('modal-activity').value.trim();
+    const newDetail   = document.getElementById('modal-detail').value.trim();
+    const newSwim     = document.getElementById('modal-swim').value;
+    const newBike     = document.getElementById('modal-bike').value;
+    const newRun      = document.getElementById('modal-run').value;
+
+    // If this day was already checked, remove old km first
+    if (state.checked[id]) {
+      if (editingDayEl.dataset.swim) state.swim -= parseInt(editingDayEl.dataset.swim);
+      if (editingDayEl.dataset.bike) state.bike -= parseInt(editingDayEl.dataset.bike);
+      if (editingDayEl.dataset.run)  state.run  -= parseInt(editingDayEl.dataset.run);
+    }
+
+    // Update DOM
+    editingDayEl.querySelector('.day-activity').textContent = newActivity;
+    if (editingDayEl.querySelector('.day-detail')) {
+      editingDayEl.querySelector('.day-detail').textContent = newDetail;
+    } else if (newDetail) {
+      const d = document.createElement('div');
+      d.className = 'day-detail';
+      d.textContent = newDetail;
+      editingDayEl.querySelector('.day-activity').after(d);
+    }
+
+    // Update dataset
+    if (newSwim) editingDayEl.dataset.swim = newSwim; else delete editingDayEl.dataset.swim;
+    if (newBike) editingDayEl.dataset.bike = newBike; else delete editingDayEl.dataset.bike;
+    if (newRun)  editingDayEl.dataset.run  = newRun;  else delete editingDayEl.dataset.run;
+
+    // If checked, add new km
+    if (state.checked[id]) {
+      if (newSwim) state.swim += parseInt(newSwim);
+      if (newBike) state.bike += parseInt(newBike);
+      if (newRun)  state.run  += parseInt(newRun);
+    }
+
+    // Save custom edits in state
+    if (!state.edits) state.edits = {};
+    state.edits[id] = { activity: newActivity, detail: newDetail, swim: newSwim, bike: newBike, run: newRun };
+
+    save();
+    updateStats();
+    closeModal();
+  }
+
+  function resetDay() {
+    if (!editingDayEl) return;
+    const id = editingDayEl.dataset.id;
+    const orig = originalData[id];
+    if (!orig) { closeModal(); return; }
+
+    document.getElementById('modal-activity').value = orig.activity;
+    document.getElementById('modal-detail').value   = orig.detail;
+    document.getElementById('modal-swim').value     = orig.swim;
+    document.getElementById('modal-bike').value     = orig.bike;
+    document.getElementById('modal-run').value      = orig.run;
+  }
+
+  // Close modal on overlay click
+  document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ── DATA ──────────────────────────────────────────────
+  // Targets (totaal van alle trainingen in schema)
+  const TARGETS = { swim: 0, bike: 0, run: 0 };
+
+  // Bereken targets automatisch uit alle dagen
+  document.querySelectorAll('.day').forEach(day => {
+    if (day.dataset.swim) TARGETS.swim += parseInt(day.dataset.swim);
+    if (day.dataset.bike) TARGETS.bike += parseInt(day.dataset.bike);
+    if (day.dataset.run)  TARGETS.run  += parseInt(day.dataset.run);
+  });
+
+  document.getElementById('swim-target').textContent = `doel: ${(TARGETS.swim/1000).toFixed(1)}km`;
+  document.getElementById('bike-target').textContent = `doel: ${TARGETS.bike}km`;
+  document.getElementById('run-target').textContent  = `doel: ${TARGETS.run}km`;
+
+  // ── STATE ─────────────────────────────────────────────
+  let state = { swim: 0, bike: 0, run: 0, checked: {} };
+
+  // Laad opgeslagen state
+  try {
+    const saved = localStorage.getItem('triathlon_schema_v3');
+    if (saved) state = JSON.parse(saved);
+  } catch(e) {}
+
+  function save() {
+    try { localStorage.setItem('triathlon_schema_v3', JSON.stringify(state)); } catch(e) {}
+  }
+
+  // ── TOGGLE DAY ────────────────────────────────────────
+  function toggleDay(btn) {
+    const day = btn.closest('.day');
+    const id  = day.dataset.id;
+    if (!id) return;
+
+    const isChecked = state.checked[id];
+
+    if (isChecked) {
+      // Uncheck
+      state.checked[id] = false;
+      day.classList.remove('completed');
+      btn.textContent = '';
+      if (day.dataset.swim) state.swim -= parseInt(day.dataset.swim);
+      if (day.dataset.bike) state.bike -= parseInt(day.dataset.bike);
+      if (day.dataset.run)  state.run  -= parseInt(day.dataset.run);
+    } else {
+      // Check
+      state.checked[id] = true;
+      day.classList.add('completed');
+      btn.textContent = '✓';
+      if (day.dataset.swim) state.swim += parseInt(day.dataset.swim);
+      if (day.dataset.bike) state.bike += parseInt(day.dataset.bike);
+      if (day.dataset.run)  state.run  += parseInt(day.dataset.run);
+    }
+
+    save();
+    updateStats();
+  }
+
+  // ── UPDATE STATS ──────────────────────────────────────
+  function updateStats() {
+    const swimM  = Math.max(0, state.swim);
+    const bikeKm = Math.max(0, state.bike);
+    const runKm  = Math.max(0, state.run);
+
+    document.getElementById('swim-total').textContent = swimM >= 1000
+      ? (swimM / 1000).toFixed(1) + 'k'
+      : swimM + 'm';
+    document.getElementById('bike-total').textContent = bikeKm;
+    document.getElementById('run-total').textContent  = runKm;
+
+    const swimPct = TARGETS.swim > 0 ? Math.min(100, (swimM / TARGETS.swim) * 100) : 0;
+    const bikePct = TARGETS.bike > 0 ? Math.min(100, (bikeKm / TARGETS.bike) * 100) : 0;
+    const runPct  = TARGETS.run  > 0 ? Math.min(100, (runKm  / TARGETS.run)  * 100) : 0;
+
+    document.getElementById('swim-bar').style.width = swimPct + '%';
+    document.getElementById('bike-bar').style.width = bikePct + '%';
+    document.getElementById('run-bar').style.width  = runPct  + '%';
+  }
+
+  // ── INITIALISEER BESTAANDE STATE ──────────────────────
+  function restoreState() {
+    // Reset totalen eerst
+    state.swim = 0; state.bike = 0; state.run = 0;
+
+    // Herstel bewerkingen eerst
+    if (state.edits) {
+      Object.entries(state.edits).forEach(([id, edit]) => {
+        const day = document.querySelector(`.day[data-id="${id}"]`);
+        if (!day) return;
+
+        // Save original before overwriting (for reset button)
+        if (!originalData[id]) {
+          originalData[id] = {
+            activity: day.querySelector('.day-activity').textContent,
+            detail:   day.querySelector('.day-detail') ? day.querySelector('.day-detail').textContent : '',
+            swim: day.dataset.swim || '',
+            bike: day.dataset.bike || '',
+            run:  day.dataset.run  || ''
+          };
+        }
+
+        day.querySelector('.day-activity').textContent = edit.activity;
+        if (day.querySelector('.day-detail')) {
+          day.querySelector('.day-detail').textContent = edit.detail;
+        }
+        if (edit.swim) day.dataset.swim = edit.swim; else delete day.dataset.swim;
+        if (edit.bike) day.dataset.bike = edit.bike; else delete day.dataset.bike;
+        if (edit.run)  day.dataset.run  = edit.run;  else delete day.dataset.run;
+      });
+    }
+
+    document.querySelectorAll('.day').forEach(day => {
+      const id  = day.dataset.id;
+      const btn = day.querySelector('.day-check');
+      if (!id || !btn) return;
+
+      if (state.checked[id]) {
+        day.classList.add('completed');
+        btn.textContent = '✓';
+        if (day.dataset.swim) state.swim += parseInt(day.dataset.swim);
+        if (day.dataset.bike) state.bike += parseInt(day.dataset.bike);
+        if (day.dataset.run)  state.run  += parseInt(day.dataset.run);
+      }
+    });
+
+    updateStats();
+  }
+
+  restoreState();
+</script>
+</body>
+</html>
